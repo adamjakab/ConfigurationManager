@@ -1,6 +1,7 @@
 {
-  "name": "ConfigurationManager",
-  "version": "0.0.1",
+  "name": "configuration-manager",
+  "version": "1.0.0",
+  "main": "",
   "authors": [
     "jakabadambalazs <jakabadambalazs@gmail.com>"
   ],
@@ -15,7 +16,12 @@
     "**/.*",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "private",
+    "readme.md",
+    ".gitignore",
+    "bower.json",
+    "package.json"
   ],
   "dependencies": {
     "underscore": "~1.7.0"
