@@ -31,10 +31,6 @@
         return(answer);
     };
 
-
-
-
-
     //----------------------------------------------------------------------------------------------------------------//
     /**
      * @param {object} [defaultConfig]
@@ -42,8 +38,6 @@
      * @constructor
      */
     function ConfigurationManager(defaultConfig) {
-        this.VERSION = '0.0.3';
-
         /**
          * This will store the configuration passed when initializing
          * It can be used to reset ConfigurationManager to the default values
@@ -211,7 +205,7 @@
      * AMD registration - registers as anonymous module
      */
     if (typeof define === 'function' && define.amd) {
-        define([], function() {
+        define(['underscore'], function(_) {
             return ConfigurationManager;
         });
     }

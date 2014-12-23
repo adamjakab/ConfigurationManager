@@ -1,0 +1,31 @@
+{
+  "name": "configuration-manager",
+  "version": "1.0.0",
+  "description": "Manage your configuration data with ease",
+  "author": "Adam Jakab",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": ""
+  },
+  "keywords": [
+    "configuration",
+    "recursive"
+  ],
+  "homepage": "https://github.com/adamjakab/ConfigurationManager",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/adamjakab/ConfigurationManager.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "jasmine-node": "~1.14.5",
+    "karma": "~0.12.28",
+    "karma-chrome-launcher": "~0.1.7",
+    "jasmine-core": "~2.1.3",
+    "karma-jasmine": "~0.3.2",
+    "karma-requirejs": "~0.2.2",
+    "karma-phantomjs-launcher": "~0.1.4",
+    "karma-js-coverage": "~0.4.0"
+  }
+}
