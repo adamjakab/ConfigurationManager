@@ -138,10 +138,6 @@ define(['underscore', 'ConfigurationManager'],
                 //
             });
 
-
-
-
-
             it("should reset to original configuration on restoreDefaults", function () {
                 var config = {a: "A", b: "B", c: "C"};
                 var CM = new ConfigurationManager(config);
@@ -152,6 +148,11 @@ define(['underscore', 'ConfigurationManager'],
                 expect(_.isEqual(CM.getAll(), {a: "AAA", b: "BBB", c: "CCC"})).toBeTruthy();
                 CM.restoreDefaults();
                 expect(_.isEqual(CM.getAll(), config)).toBeTruthy();
+            });
+
+            it("should return stringified version of configuration", function() {
+                var CM = new ConfigurationManager({a: "A", b: "B", c: "C"});
+                expect(CM.toString()).toBe('{"a":"A","b":"B","c":"C"}');
             });
 
         });

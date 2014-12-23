@@ -29,7 +29,7 @@
          * @type {Object}
          * @private
          */
-        var _OPT = {};
+        var _CONFIG = {};
 
         /**
          * @type {ConfigurationManager}
@@ -41,7 +41,7 @@
          */
         var init = function() {
             self.merge(defaultConfig);
-            _DEFAULT = JSON.parse(JSON.stringify(_OPT));
+            _DEFAULT = JSON.parse(JSON.stringify(_CONFIG));
         };
 
         /**
@@ -69,7 +69,7 @@
          */
         this.get = function(key, defaultValue) {
             var keyElements = this.parseKey(key);
-            var currentItem = _OPT;
+            var currentItem = _CONFIG;
             while(!_.isNull(currentItem) && keyElements.length != 0) {
                 var currentKey = _.first(keyElements);
                 keyElements = _.rest(keyElements);
@@ -95,7 +95,7 @@
         this.set = function(key, val) {
             if(!isAccaptableValue(val)) return this;
             var keyElements = this.parseKey(key);
-            var currentItem = _OPT;
+            var currentItem = _CONFIG;
             var usedKeyElements = [];
             var currentKey, usedKeyChain, isLastElement;
             while(keyElements.length != 0) {
@@ -127,7 +127,7 @@
         this.hasKey = function(key) {
             var answer = false;
             var keyElements = this.parseKey(key);
-            var currentItem = _OPT;
+            var currentItem = _CONFIG;
             while(!_.isNull(currentItem) && keyElements.length != 0) {
                 var currentKey = _.first(keyElements);
                 keyElements = _.rest(keyElements);
@@ -152,7 +152,7 @@
         this.merge = function(source, key) {
             if(_.isObject(source)) {
                 if(!key) {
-                    _OPT = _.extend(_OPT, source);
+                    _CONFIG = _.extend(_CONFIG, source);
                 } else {
                     this.set(key, _.extend(this.get(key), source));
                 }
@@ -165,18 +165,18 @@
          * @returns {Object}
          */
         this.getAll = function() {
-            return _OPT;
+            return _CONFIG;
         };
 
         this.toString = function() {
-            return(JSON.stringify(_OPT));
+            return(JSON.stringify(_CONFIG));
         };
 
         /**
          * Restores the original configuration(the one you passed when creating the instance)
          */
         this.restoreDefaults = function() {
-            _OPT = JSON.parse(JSON.stringify(_DEFAULT));
+            _CONFIG = JSON.parse(JSON.stringify(_DEFAULT));
         };
 
         //auto-initialize on construction
