@@ -19,7 +19,7 @@
     };
 
     // Current version
-    ConfigurationManager.VERSION = '0.0.1';
+    ConfigurationManager.VERSION = '0.0.2';
 
     /**
      * Export ConfigurationManager for **NodeJs** or add it as global if in browser
