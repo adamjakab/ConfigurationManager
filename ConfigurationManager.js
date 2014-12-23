@@ -45,7 +45,24 @@
         };
 
         /**
-         * Get a key value
+         * Check if value is one of: string, number, boolean, array, object
+         * @param {*} value
+         * @return {boolean}
+         */
+        var isAccaptableValue = function(value) {
+            return ((_.isString(value)
+                || _.isNumber(value)
+                || _.isBoolean(value)
+                || _.isArray(value)
+                || _.isObject(value)
+                || _.isNull(value)
+                )
+                && !_.isFunction(value)
+            );
+        };
+
+        /**
+         * Get a key value - if key is not found and no defaultValue set it will return null
          * @param {string|Array} key
          * @param {*} [defaultValue]
          * @returns {*}
@@ -62,7 +79,7 @@
                     currentItem = null;
                 }
             }
-            return(!_.isNull(currentItem) ? currentItem : defaultValue);
+            return(_.isNull(currentItem) && !_.isUndefined(defaultValue) ? defaultValue : currentItem);
         };
 
         /**
@@ -76,6 +93,7 @@
          * @returns ConfigurationManager
          */
         this.set = function(key, val) {
+            if(!isAccaptableValue(val)) return this;
             var keyElements = this.parseKey(key);
             var currentItem = _OPT;
             var usedKeyElements = [];
@@ -150,6 +168,9 @@
             return _OPT;
         };
 
+        this.toString = function() {
+            return(JSON.stringify(_OPT));
+        };
 
         /**
          * Restores the original configuration(the one you passed when creating the instance)
@@ -164,7 +185,7 @@
 
 
     /**
-     * Internal function for splitting a dot-separated path (x.y.z) to an array of elements
+     * function for splitting a dot-separated path (x.y.z) to an array of elements
      *
      * @param {string|Array} key
      * @returns []

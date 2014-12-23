@@ -74,7 +74,7 @@ define(['underscore', 'ConfigurationManager'],
 
             it("should keep configuration types", function () {
                 var CM = new ConfigurationManager({});
-                //string(...I think we have checked this already ;))
+                //string
                 CM.set("a", "AAA");
                 expect(CM.get("a")).toBe("AAA");
                 expect(_.isString(CM.get("a"))).toBeTruthy();
@@ -99,26 +99,36 @@ define(['underscore', 'ConfigurationManager'],
                 CM.set("a", D);
                 expect(CM.get("a")).toBe(D);
                 expect(_.isDate(CM.get("a"))).toBeTruthy();
-                //
-                var F = function() {return {test:"TEST"};};
-                CM.set("a", F);
-                expect(CM.get("a")).toBe(F);
-                expect(_.isFunction(CM.get("a"))).toBeTruthy();
-                //@todo: finish me
-
+                //Null
+                CM.set("a", null);
+                expect(CM.get("a")).toBeNull();
             });
 
+            it("should discard function type", function () {
+                var CM = new ConfigurationManager({});
+                var F = function(){};
+                CM.set("a", F);
+                expect(CM.hasKey("a")).toBeFalsy();
+                expect(CM.get("a")).toBeNull();
+            });
+
+            it("should discard undefined type", function () {
+                var CM = new ConfigurationManager({});
+                CM.set("a");
+                expect(CM.hasKey("a")).toBeFalsy();
+                expect(CM.get("a")).toBeNull();
+            });
 
             it("should merge and return correct configuration values", function () {
                 var config = {a: "A", b: "B", c: "C"};
                 var CM = new ConfigurationManager(config);
                 var config2 = {a: "AAA", x: "X", y: "Y"};
                 CM.merge(config2);
-                expect(_.has(CM.getAll(), "a")).toBeTruthy();
-                expect(_.has(CM.getAll(), "b")).toBeTruthy();
-                expect(_.has(CM.getAll(), "c")).toBeTruthy();
-                expect(_.has(CM.getAll(), "x")).toBeTruthy();
-                expect(_.has(CM.getAll(), "y")).toBeTruthy();
+                expect(CM.hasKey("a")).toBeTruthy();
+                expect(CM.hasKey("b")).toBeTruthy();
+                expect(CM.hasKey("c")).toBeTruthy();
+                expect(CM.hasKey("x")).toBeTruthy();
+                expect(CM.hasKey("y")).toBeTruthy();
                 //
                 expect(CM.get("a")).toBe("AAA");
                 expect(CM.get("b")).toBe("B");
