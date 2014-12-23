@@ -104,19 +104,27 @@ define(['underscore', 'ConfigurationManager'],
                 expect(CM.get("a")).toBeNull();
             });
 
-            it("should discard function type", function () {
+            it("should discard function type and should not modify previous value", function () {
                 var CM = new ConfigurationManager({});
                 var F = function(){};
                 CM.set("a", F);
                 expect(CM.hasKey("a")).toBeFalsy();
                 expect(CM.get("a")).toBeNull();
+                CM.set("a", "A");
+                CM.set("a", F);
+                expect(CM.hasKey("a")).toBeTruthy();
+                expect(CM.get("a")).toBe("A");
             });
 
-            it("should discard undefined type", function () {
+            it("should discard undefined type and should not modify previous value", function () {
                 var CM = new ConfigurationManager({});
                 CM.set("a");
                 expect(CM.hasKey("a")).toBeFalsy();
                 expect(CM.get("a")).toBeNull();
+                CM.set("a", "A");
+                CM.set("a");
+                expect(CM.hasKey("a")).toBeTruthy();
+                expect(CM.get("a")).toBe("A");
             });
 
             it("should merge and return correct configuration values", function () {

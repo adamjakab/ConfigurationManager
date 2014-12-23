@@ -116,7 +116,7 @@
                     currentItem[currentKey] = val;
                 }
             }
-            return(this);
+            return this;
         };
 
         /**
@@ -168,15 +168,18 @@
             return _CONFIG;
         };
 
-        this.toString = function() {
-            return(JSON.stringify(_CONFIG));
-        };
-
         /**
          * Restores the original configuration(the one you passed when creating the instance)
          */
         this.restoreDefaults = function() {
             _CONFIG = JSON.parse(JSON.stringify(_DEFAULT));
+        };
+
+        /**
+         * @return {string}
+         */
+        this.toString = function() {
+            return(JSON.stringify(_CONFIG));
         };
 
         //auto-initialize on construction
@@ -198,7 +201,7 @@
         } else if(_.isArray(key)) {
             answer = key;
         }
-        //compact and remove all empty and numeric items from array
+        //compact and remove all empty and keys items from array
         answer = _.filter(answer, function(item) {
             return !_.isEmpty(item) && isNaN(item);
         });
