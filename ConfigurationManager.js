@@ -8,29 +8,6 @@
      */
     var root = this;
 
-    /**
-     * Internal function for splitting a dot-separated path (x.y.z) to an array of elements
-     *
-     * @param {string|Array} key
-     * @returns []
-     * @private
-     */
-    var _parseKey = function(key) {
-        var answer;
-        if(_.isString(key)) {
-            key = key.toString();
-            answer = key.split(".");
-        } else if(_.isArray(key)) {
-            answer = key;
-        }
-        //compact and remove all empty and numeric items from array
-        answer = _.filter(answer, function(item) {
-            return !_.isEmpty(item) && isNaN(item);
-        });
-        //console.log("KE: " + JSON.stringify(answer));
-        return(answer);
-    };
-
     //----------------------------------------------------------------------------------------------------------------//
     /**
      * @param {object} [defaultConfig]
@@ -74,7 +51,7 @@
          * @returns {*}
          */
         this.get = function(key, defaultValue) {
-            var keyElements = _parseKey(key);
+            var keyElements = this.parseKey(key);
             var currentItem = _OPT;
             while(!_.isNull(currentItem) && keyElements.length != 0) {
                 var currentKey = _.first(keyElements);
@@ -99,7 +76,7 @@
          * @returns ConfigurationManager
          */
         this.set = function(key, val) {
-            var keyElements = _parseKey(key);
+            var keyElements = this.parseKey(key);
             var currentItem = _OPT;
             var usedKeyElements = [];
             var currentKey, usedKeyChain, isLastElement;
@@ -131,7 +108,7 @@
          */
         this.hasKey = function(key) {
             var answer = false;
-            var keyElements = _parseKey(key);
+            var keyElements = this.parseKey(key);
             var currentItem = _OPT;
             while(!_.isNull(currentItem) && keyElements.length != 0) {
                 var currentKey = _.first(keyElements);
@@ -174,8 +151,10 @@
         };
 
 
-
-        this.resetToDefault = function() {
+        /**
+         * Restores the original configuration(the one you passed when creating the instance)
+         */
+        this.restoreDefaults = function() {
             _OPT = JSON.parse(JSON.stringify(_DEFAULT));
         };
 
@@ -184,10 +163,26 @@
     }
 
 
-    ConfigurationManager.prototype.test = function() {
-        console.log("ConfigurationManager OK!");
+    /**
+     * Internal function for splitting a dot-separated path (x.y.z) to an array of elements
+     *
+     * @param {string|Array} key
+     * @returns []
+     */
+    ConfigurationManager.prototype.parseKey = function(key) {
+        var answer;
+        if(_.isString(key)) {
+            key = key.toString();
+            answer = key.split(".");
+        } else if(_.isArray(key)) {
+            answer = key;
+        }
+        //compact and remove all empty and numeric items from array
+        answer = _.filter(answer, function(item) {
+            return !_.isEmpty(item) && isNaN(item);
+        });
+        return(answer);
     };
-
 
 
 
