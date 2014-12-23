@@ -1,0 +1,23 @@
+{
+  "name": "ConfigurationManager",
+  "version": "0.0.1",
+  "authors": [
+    "jakabadambalazs <jakabadambalazs@gmail.com>"
+  ],
+  "description": "Manage your configuration data with ease",
+  "keywords": [
+    "configuration",
+    "recursive"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/adamjakab/ConfigurationManager",
+  "ignore": [
+    "**/.*",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "underscore": "~1.7.0"
+  }
+}

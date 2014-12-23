@@ -1,0 +1,8 @@
+# hidden/useless files
+.directory
+
+# JetBrains
+.idea
+
+# Bower
+bower_components
