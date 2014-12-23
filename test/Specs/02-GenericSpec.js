@@ -1,6 +1,6 @@
 define(['underscore', 'ConfigurationManager'],
     function (_, ConfigurationManager) {
-        describe("Generic", function () {
+        describe("Generic Tests", function () {
 
             it("should create ConfigurationManager", function () {
                 var CM = new ConfigurationManager();
