@@ -1,6 +1,6 @@
 {
   "name": "configuration-manager",
-  "main": "",
+  "main": "ConfigurationManager.js",
   "authors": [
     "jakabadambalazs <jakabadambalazs@gmail.com>"
   ],
