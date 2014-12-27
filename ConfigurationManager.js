@@ -37,11 +37,31 @@
         var self = this;
 
         /**
+         * List of listeners called on data change
+         * @type {Array}
+         */
+        var listeners = [];
+
+        /**
+         * Checksum of the current data
+         * @type {number}
+         */
+        var checkSum = 0;
+
+        /**
+         * @type {number}
+         */
+        var trackIntervalRef = null;
+
+        var trackIntervalDelay = 30 * 1000;
+
+        /**
          * //auto setup with "defaultConfig" parameter and retain an unmutable copy in _DEFAULT
          */
         var init = function() {
             self.merge(defaultConfig);
             _DEFAULT = JSON.parse(JSON.stringify(_CONFIG));
+            computeCheckum();
         };
 
         /**
@@ -51,14 +71,88 @@
          */
         var isAccaptableValue = function(value) {
             return ((_.isString(value)
-                || _.isNumber(value)
-                || _.isBoolean(value)
-                || _.isArray(value)
-                || _.isObject(value)
-                || _.isNull(value)
-                )
-                && !_.isFunction(value)
+            || _.isNumber(value)
+            || _.isBoolean(value)
+            || _.isArray(value)
+            || _.isObject(value)
+            || _.isNull(value)
+            )
+            && !_.isFunction(value)
             );
+        };
+
+        /**
+         * Simple Checksum computation of the current data - todo: need proper crc32 implementation here
+         * @return {boolean} - returns true if there are changes in data
+         */
+        var computeCheckum = function() {
+            var input = JSON.stringify(_CONFIG);
+            var positiveSum = 0;
+            var negativeSum = 0;
+            if(_.isString(input) && input.length) {
+                var charcode;
+                for(var i=0; i<input.length; i++) {
+                    charcode = input.charCodeAt(i) - 48;
+                    positiveSum += charcode;
+                    negativeSum -= charcode;
+                }
+            }
+            var oldChecksum = checkSum;
+            checkSum = Math.abs(positiveSum*negativeSum);
+            return(oldChecksum!==checkSum);
+        };
+
+
+        var trackChanges = function() {
+            if(listeners.length && _.isNull(trackIntervalRef)) {
+                trackIntervalRef = setInterval(trackChanges, trackIntervalDelay);
+            } else if (listeners.length == 0) {
+                clearInterval(trackIntervalRef);
+                trackIntervalRef = null;
+            }
+            var isChanged = computeCheckum();
+            if(isChanged) {
+                if(listeners.length) {
+                    for(var i=0; i<listeners.length; i++) {
+                        listeners[i].call(self);
+                    }
+                }
+            }
+        };
+
+        /**
+         * Changes interval delay between checks
+         * @param {number} ms
+         */
+        this.setTrackIntervalDelay = function(ms) {
+            if(_.isNumber(ms)) {
+                trackIntervalDelay = ms;
+            }
+        };
+
+        /**
+         * @param {function} listener
+         */
+        this.addChangeListener = function(listener) {
+            if(_.isFunction(listener)) {
+                listeners.push(listener);
+                trackChanges();
+            }
+        };
+
+        /**
+         * @param {function} listener
+         */
+        this.removeChangeListener = function(listener) {
+            var i = _.indexOf(listeners, listener);
+            if(i != -1) {
+                console.log("REMOVING LISTENER");
+                listeners.splice(i,1);
+            }
+        };
+
+        this.removeAllChangeListeners = function() {
+            listeners = [];
         };
 
         /**
