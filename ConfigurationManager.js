@@ -242,15 +242,43 @@
          * if value at key is not an object, merge will be ignored (you can use set() in that case)
          * @param {object} source
          * @param {string|Array} [key]
+         * @param {Boolean} [deep] - recurse into objects
          */
-        this.merge = function(source, key) {
+        this.merge = function(source, key, deep) {
+            deep = (deep === true);
             if(_.isObject(source)) {
-                if(!key) {
-                    _CONFIG = _.extend(_CONFIG, source);
+                if(!deep) {
+                    if (!key) {
+                        _CONFIG = _.extend(_CONFIG, source);
+                    } else {
+                        this.set(key, _.extend(this.get(key), source));
+                    }
                 } else {
-                    this.set(key, _.extend(this.get(key), source));
+                    if (!key) {
+                        _CONFIG = deepExtend(_CONFIG, source);
+                    } else {
+                        this.set(key, deepExtend(this.get(key), source));
+                    }
                 }
             }
+        };
+
+        /**
+         * @param {*} target
+         * @param {*} source
+         * @return {*}
+         */
+        var deepExtend = function(target, source) {
+            for (var prop in source) {
+                if(source.hasOwnProperty(prop)) {
+                    if (target.hasOwnProperty(prop) && _.isObject(source[prop]) && _.isObject(target[prop])) {
+                        deepExtend(target[prop], source[prop]);
+                    } else {
+                        target[prop] = source[prop];
+                    }
+                }
+            }
+            return target;
         };
 
 
